@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "关于",
+  "usingComponents": {
+    "nav-bar": "../../components/NavBar"
+  }
+}

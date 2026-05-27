@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "联系",
+  "usingComponents": {
+    "nav-bar": "../../components/NavBar"
+  }
+}
