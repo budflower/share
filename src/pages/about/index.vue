@@ -19,7 +19,7 @@
               <img :src="personalInfo.avatar" :alt="personalInfo.name" class="about-intro__avatar" />
             </div>
             <div class="about-intro__text animate-fade-in-up delay-100">
-              <h2 class="about-intro__heading">个人简介</h2>
+              <h2 class="about-intro__heading">个人简介啊啊啊啊</h2>
               <p class="about-intro__paragraph">
                 我是一名热爱技术的全栈开发者，拥有6年以上的Web开发经验。我专注于创造高质量、高性能的数字产品。
               </p>
