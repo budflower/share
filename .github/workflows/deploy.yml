@@ -95,5 +95,5 @@ jobs:
             }'
 
       - name: Debug URL
-              run: |
-                echo "Pages URL is: '${{ github.pages.url }}'"
+        run: |
+          echo "Pages URL is: '${{ github.pages.url }}'"
