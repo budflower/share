@@ -44,3 +44,52 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
+
+      # ✅ 新增：清 Cloudflare 缓存
+      - name: Purge Cloudflare Cache
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
+
+      - name: Notify Feishu (Success)
+        if: success()
+        run: |
+          curl -s -X POST ${{ secrets.FEISHU_WEBHOOK }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "msg_type": "interactive",
+              "card": {
+                "config": { "wide_screen_mode": true },
+                "header": {
+                  "title": { "tag": "plain_text", "content": "✅ 部署成功" },
+                  "template": "green"
+                },
+                "elements": [
+                  { "tag": "div", "text": { "tag": "lark_md", "content": "🌐 **访问站点**\n[https://你的域名.com](https://你的域名.com)" } },
+                  { "tag": "div", "text": { "tag": "lark_md", "content": "📦 **Commit**\n`${{ github.sha }}`" } },
+                  { "tag": "hr" },
+                  { "tag": "note", "elements": [{ "tag": "plain_text", "content": "GitHub Actions 自动通知" }] }
+                ]
+              }
+            }'
+
+      - name: Notify Feishu (Failure)
+        if: failure()
+        run: |
+          curl -s -X POST ${{ secrets.FEISHU_WEBHOOK }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "msg_type": "interactive",
+              "card": {
+                "config": { "wide_screen_mode": true },
+                "header": {
+                  "title": { "tag": "plain_text", "content": "❌ 部署失败" },
+                  "template": "red"
+                },
+                "elements": [
+                  { "tag": "div", "text": { "tag": "lark_md", "content": "🔗 **查看日志**\n[点击跳转 Actions](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" } }
+                ]
+              }
+            }'
