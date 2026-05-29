@@ -21,6 +21,7 @@
     "@dcloudio/uni-cli-shared": "3.0.0-alpha-4010520240507001",
     "@dcloudio/uni-stacktracey": "3.0.0-alpha-4010520240507001",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-4010520240507001",
+    "@lhci/cli": "^0.15.1",
     "@types/node": "^20.12.7",
     "sass": "^1.77.0",
     "typescript": "^5.4.5",
