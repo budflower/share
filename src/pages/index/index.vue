@@ -17,7 +17,7 @@
                   查看作品集
                 </button>
                 <button class="btn btn--secondary btn--lg" @click="navigateTo('/pages/contact/index')">
-                  联系我00
+                  联系我
                 </button>
               </div>
             </div>

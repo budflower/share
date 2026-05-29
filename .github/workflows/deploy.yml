@@ -6,8 +6,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -45,7 +43,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
 
-      # ✅ 新增：清 Cloudflare 缓存
+      # ✅ 清 Cloudflare 缓存
       - name: Purge Cloudflare Cache
         run: |
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
@@ -53,10 +51,26 @@ jobs:
             -H "Content-Type: application/json" \
             --data '{"purge_everything":true}'
 
+      # ✅ 等待 Pages / CDN 生效
+      - name: Wait for site ready
+        run: sleep 60
+
+      # ✅ Lighthouse CI（测线上地址）
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun \
+            --upload.target=temporary-public-storage \
+            --collect.url=${{ secrets.SITE_URL }} \
+            --collect.numberOfRuns=3 \
+            --assert.assertions.categories:performance=>=0.9 \
+            --assert.assertions.categories:accessibility=>=0.9
+
+      # ✅ 飞书通知（成功）
       - name: Notify Feishu (Success)
         if: success()
         run: |
-          curl -s -X POST ${{ secrets.FEISHU_WEBHOOK }} \
+          curl -s -X POST "${{ secrets.FEISHU_WEBHOOK }}" \
             -H "Content-Type: application/json" \
             -d '{
               "msg_type": "interactive",
@@ -67,7 +81,7 @@ jobs:
                   "template": "green"
                 },
                 "elements": [
-                  { "tag": "div", "text": { "tag": "lark_md", "content": "🌐 **访问站点**\n[${{ github.pages.url }}]( ${{ github.pages.url }} )" } },
+                  { "tag": "div", "text": { "tag": "lark_md", "content": "🌐 **访问站点**\n[${{ secrets.SITE_URL }}](${{ secrets.SITE_URL }})" } },
                   { "tag": "div", "text": { "tag": "lark_md", "content": "📦 **Commit**\n`${{ github.sha }}`" } },
                   { "tag": "hr" },
                   { "tag": "note", "elements": [{ "tag": "plain_text", "content": "GitHub Actions 自动通知" }] }
@@ -75,10 +89,11 @@ jobs:
               }
             }'
 
+      # ✅ 飞书通知（失败）
       - name: Notify Feishu (Failure)
         if: failure()
         run: |
-          curl -s -X POST ${{ secrets.FEISHU_WEBHOOK }} \
+          curl -s -X POST "${{ secrets.FEISHU_WEBHOOK }}" \
             -H "Content-Type: application/json" \
             -d '{
               "msg_type": "interactive",
@@ -93,5 +108,3 @@ jobs:
                 ]
               }
             }'
-
-      
