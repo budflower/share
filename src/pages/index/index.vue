@@ -14,7 +14,7 @@
               
               <div class="hero__actions">
                 <button class="btn btn--primary btn--lg" @click="navigateTo('/pages/portfolio/index')">
-                  查看作品集00
+                  查看作品集
                 </button>
                 <button class="btn btn--secondary btn--lg" @click="navigateTo('/pages/contact/index')">
                   联系我

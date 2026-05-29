@@ -67,7 +67,7 @@ jobs:
                   "template": "green"
                 },
                 "elements": [
-                  { "tag": "div", "text": { "tag": "lark_md", "content": "🌐 **访问站点**\n[https://你的域名.com](https://你的域名.com)" } },
+                  { "tag": "div", "text": { "tag": "lark_md", "content": "🌐 **访问站点**\n[${{ github.pages.url }}]( ${{ github.pages.url }} )" } },,
                   { "tag": "div", "text": { "tag": "lark_md", "content": "📦 **Commit**\n`${{ github.sha }}`" } },
                   { "tag": "hr" },
                   { "tag": "note", "elements": [{ "tag": "plain_text", "content": "GitHub Actions 自动通知" }] }
