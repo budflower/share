@@ -56,16 +56,14 @@ jobs:
         run: sleep 60
 
       # ✅ Lighthouse CI（测线上地址）
+      # ✅ Lighthouse CI（测线上地址）
       - name: Run Lighthouse CI
         run: |
           echo "🚀 开始安装灯塔..."
           npm install -g @lhci/cli@0.12.x
           
-          echo "⏳ 等待 10 秒，确保 GitHub Pages 完全生效..."
-          sleep 10
-          
-          echo "🔍 开始审计..."
-          # --max-warnings 0 是为了不因为警告退出，只看重分数
+          echo "🔍 开始审计线上地址..."
+          # 因为 lighthouserc.cjs 里已经配置了 url，这里直接 autorun 即可
           lhci autorun --max-warnings 0
 
       # ✅ 飞书通知（成功）
