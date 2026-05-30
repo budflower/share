@@ -6,7 +6,7 @@ module.exports = {
       // staticDistDir: './docs', 
       
       // ✅ 替换为你的 GitHub Pages 地址
-      url: ['https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/'],
+      url: ['https://budflower.github.io/share/'],
       
       numberOfRuns: 1,
       settings: {
